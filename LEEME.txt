@@ -1,0 +1,60 @@
+PROJECT ECHO WEB V1.4
+=====================
+
+CAMBIOS DE ESTA VERSION
+-----------------------
+- Antes de comenzar solo se muestra el panel de operador: conexión, parámetros y consola.
+- La ventana del minijuego queda oculta hasta que se inicia una partida.
+- Al iniciar una partida real, la web pasa a la vista inmersiva cuando Arduino confirma JUEGO INICIADO.
+- El modo presentación también abre directamente el minijuego inmersivo.
+- La vista de juego ocupa toda la ventana y oculta el panel de conexión y la consola.
+- Se mantienen las tres barras de progreso, pero se oculta el contador web durante la partida.
+- El tiempo de la bomba física indicado en parámetros pasa a 01:00.
+- El minuto físico comienza al terminar la investigación y habilitarse el teclado, para dejar 60 s reales para introducir el código.
+- El BAT usa el puerto 8767 para evitar servidores anteriores.
+
+INSTALACIÓN
+-----------
+1. Cierra los servidores Python de versiones anteriores con CTRL+C.
+2. Extrae el ZIP completo en una carpeta nueva, por ejemplo:
+   C:\Users\TuUsuario\Pictures\project-echo-web-v1.4
+3. No mezcles estos archivos con los de V1.2, V1.3 o V1.3.1.
+4. Ejecuta start-local.bat desde esta nueva carpeta.
+5. Se abrirá http://127.0.0.1:8767/
+6. Mantén abierta la ventana del servidor Python.
+
+PARTIDA REAL
+------------
+1. Cierra Monitor Serie y Serial Plotter.
+2. Conecta el Arduino MEGA por USB y pulsa CONECTAR ARDUINO.
+3. Espera a que aparezca Arduino preparado y se habilite INICIAR PROJECT ECHO.
+4. Pulsa INICIAR PROJECT ECHO.
+5. Cuando Arduino confirme JUEGO INICIADO, desaparecerá el panel de operador y quedará únicamente el minijuego a pantalla completa.
+6. Las barras muestran el avance de las fases. El contador de tiempo no se muestra en la web: se consulta en la bomba física.
+
+MODO PRESENTACIÓN
+-----------------
+- Pulsa MODO PRESENTACIÓN · SIN ARDUINO.
+- El minijuego entra directamente en la vista inmersiva.
+- Las fases siguen durando 12 s, 28 s y 20 s (60 s en total).
+- Al acabar aparece la pantalla de demostración completada. El botón de repetir devuelve al panel de operador antes de empezar otra demostración.
+
+CAMBIAR LA BOMBA FÍSICA A 60 SEGUNDOS
+------------------------------------
+Se incluye el sketch actualizado en firmware/EscapeRoom_V2_4_1.ino. Cárgalo en el MEGA desde el IDE de Arduino.
+
+El comportamiento queda así: el display muestra 01:00 durante la investigación web de 60 segundos, pero no descuenta todavía. Al terminar las tres fases, Arduino habilita el teclado y empieza entonces la cuenta atrás física de 60 segundos para introducir la contraseña. De este modo no se agota el minuto justo cuando el teclado se desbloquea.
+
+Si prefieres conservar tu archivo V2.4 y editarlo tú, las tres modificaciones pequeñas están descritas paso a paso en CAMBIO-TIEMPO-ARDUINO.txt. La constante DURACION_INVESTIGACION = 60UL se mantiene igual. El firmware actualizado conserva el mensaje serie ESCAPE ROOM V2.4 PREPARADO, así que no hace falta cambiar el protocolo ni la web.
+
+NOTAS
+-----
+- La web mantiene la investigación en 60 segundos.
+- El temporizador físico lo gestiona Arduino de forma independiente.
+- Debes cargar el sketch V2.4.1 incluido para aplicar el inicio del minuto físico después de la investigación.
+- La vista inmersiva CSS funciona aunque el navegador no permita el modo de pantalla completa nativo. En Chrome/Edge se intenta activar también pantalla completa; si se rechaza, la interfaz sigue mostrando solo el minijuego dentro de la pestaña.
+
+PUERTO Y VERSIONES
+------------------
+- Esta versión usa http://127.0.0.1:8767/.
+- Si el puerto 8767 está ocupado por otro programa, cierra el proceso anterior o libera el puerto.

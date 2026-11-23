@@ -1,0 +1,88 @@
+PROJECT ECHO WEB V1.3 - PROTOTIPO PARA PRESENTACION
+=================================================
+
+CONTENIDO
+---------
+- index.html: aplicación completa en un único archivo (HTML, CSS y JavaScript).
+- start-local.bat: servidor local Windows en 127.0.0.1:8765.
+- LEEME.txt: estas instrucciones.
+
+REQUISITOS
+----------
+- Windows y Python 3.
+- Navegador de escritorio compatible con Web Serial API (Opera/Chrome/Edge actualizados).
+- Para una partida real: Arduino MEGA 2560 con firmware V2.4.
+
+INICIAR
+-------
+1. Descomprime el proyecto en una carpeta.
+2. Ejecuta start-local.bat.
+3. Se abrirá http://127.0.0.1:8765/.
+4. Para detener el servidor, pulsa CTRL+C en la ventana del servidor Python.
+
+DOS MODOS
+---------
+A) PARTIDA REAL CON ARDUINO
+- Cierra Arduino IDE Monitor Serie y Serial Plotter.
+- Pulsa CONECTAR ARDUINO y selecciona el MEGA 2560.
+- La web espera ESCAPE ROOM V2.4 PREPARADO.
+- Solicita GETCODE y recibe CODE:dddd.
+- Pulsa INICIAR PROJECT ECHO. Envía START y espera JUEGO INICIADO.
+- El firmware controla el cronómetro físico de 180 segundos.
+- La web ejecuta tres fases visuales durante 60 segundos: 12 + 28 + 20.
+- El firmware habilita el teclado y envía TECLADO HABILITADO.
+- El jugador introduce la clave en el teclado matricial físico.
+
+B) MODO PRESENTACION (SIN ARDUINO)
+- Pulsa MODO PRESENTACIÓN · SIN ARDUINO.
+- La web genera una clave sintética local y construye las mismas pistas.
+- Recorre automáticamente las tres fases visuales durante 60 segundos.
+- Al finalizar muestra una pantalla de demostración completada.
+- Este modo NO envía comandos al Arduino, NO valida una contraseña física y NO representa el estado real del hardware.
+- Pulsa REPETIR DEMOSTRACIÓN para volver a empezar.
+
+REGLAS DEL PROTOTIPO
+--------------------
+FASE 1 - SIGNAL LOST (12 s): tres canales muestran cuatro cifras cada uno.
+El único dígito presente en los tres canales es la primera cifra de la clave.
+Los distractores se reparten sin solaparse entre canales para garantizar unicidad.
+
+FASE 2 - CORRUPTED DATA (28 s): dos ecuaciones lineales, 14 s cada una.
+Cada ecuación tiene una solución entera única entre 0 y 9. Las soluciones son
+la segunda y tercera cifra de la clave.
+
+FASE 3 - FINAL DECRYPTION (20 s): una letra A-J representa la última cifra,
+con A=0, B=1, ..., J=9.
+
+La clave se conserva como texto de cuatro caracteres: se admiten ceros iniciales
+y dígitos repetidos. La página no muestra la clave completa al participante.
+
+PROTOCOLO USB FIRMWARE V2.4
+---------------------------
+9600 baudios, 8N1, líneas terminadas en LF.
+Web -> Arduino: GETCODE
+, START
+
+Arduino -> Web:
+- ESCAPE ROOM V2.4 PREPARADO
+- CODE:dddd
+- JUEGO INICIADO
+- TECLADO HABILITADO
+- CONTRASENA INCORRECTA
+- SISTEMA DESACTIVADO
+- TIEMPO AGOTADO
+
+NOTAS
+-----
+- La conexión USB es real solo en el modo de partida real.
+- En modo presentación, el estado se identifica explícitamente como demo local.
+- El temporizador web mide la investigación de 60 segundos. El temporizador físico
+  de 180 segundos sigue siendo responsabilidad exclusiva del Arduino.
+- Para una presentación sin hardware, utiliza el modo demo local.
+- Para una partida real, el navegador debe abrirse desde localhost/HTTPS y el
+  Monitor Serie de Arduino IDE debe estar cerrado.
+
+VALIDACION
+----------
+El HTML/JavaScript debe probarse localmente en el navegador. La comunicación
+física requiere Arduino MEGA 2560 con firmware V2.4 conectado por USB.
